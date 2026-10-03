@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Font Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <style>
         body { font-family: 'Inter', sans-serif; }
         .glass-panel {
@@ -39,27 +39,21 @@
             background: rgba(30, 41, 59, 0.88);
             backdrop-filter: blur(12px);
         }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
-        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: rgba(156, 163, 175, 0.4);
             border-radius: 9999px;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(107, 114, 128, 0.6);
-        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(107, 114, 128, 0.6); }
         @keyframes pulse-ring {
             0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
             70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
-        .recording-pulse {
-            animation: pulse-ring 1.5s infinite;
+        .recording-pulse { animation: pulse-ring 1.5s infinite; }
+        @media (prefers-reduced-motion: reduce) {
+            .recording-pulse { animation: none; }
         }
     </style>
 </head>
@@ -80,8 +74,8 @@
 
             <div class="flex items-center space-x-3">
                 <!-- Sync Status Indicator -->
-                <div id="syncBadge" class="flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs font-medium bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <div id="syncBadge" class="flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                    <span id="syncDot" class="w-2 h-2 rounded-full bg-slate-400 animate-pulse"></span>
                     <span id="syncStatusText">Connecting Cloud...</span>
                 </div>
 
@@ -96,12 +90,12 @@
         <main class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8 flex-grow">
             <!-- Left Column: Translator Panel -->
             <div class="lg:col-span-8 flex flex-col space-y-4">
-                
+
                 <div class="glass-panel rounded-2xl shadow-lg border border-slate-200/80 dark:border-slate-800 p-5 flex flex-col">
-                    
+
                     <!-- Searchable Language Selection Bar -->
                     <div class="grid grid-cols-1 md:grid-cols-[1fr,auto,1fr] items-center gap-3 mb-4 pb-4 border-b border-slate-200/80 dark:border-slate-800">
-                        
+
                         <!-- Source Language Custom Trigger Button -->
                         <div class="relative">
                             <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Source Language</label>
@@ -142,7 +136,7 @@
                                 <span id="detectedLangTag" class="hidden text-xs font-semibold px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300">Detected: Auto</span>
                                 <div class="flex items-center space-x-1 ml-auto">
                                     <!-- Mic Dictation Button -->
-                                    <button id="micBtn" class="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="Speech Input (Voice dictation for all languages)">
+                                    <button id="micBtn" class="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="Speak (voice input)">
                                         <i class="fa-solid fa-microphone"></i>
                                     </button>
                                     <!-- Clear Input Button -->
@@ -152,7 +146,7 @@
                                 </div>
                             </div>
 
-                            <textarea id="sourceText" maxlength="5000" rows="6" class="w-full bg-transparent resize-none outline-none text-slate-800 dark:text-slate-100 placeholder-slate-400 text-base custom-scrollbar" placeholder="Type, paste, or speak text to translate..."></textarea>
+                            <textarea id="sourceText" dir="auto" maxlength="5000" rows="6" class="w-full bg-transparent resize-none outline-none text-slate-800 dark:text-slate-100 placeholder-slate-400 text-base custom-scrollbar" placeholder="Type, paste, or speak text to translate..."></textarea>
 
                             <div class="flex items-center justify-between pt-3 mt-auto border-t border-slate-200/60 dark:border-slate-700/50">
                                 <div class="flex items-center space-x-2">
@@ -179,11 +173,14 @@
 
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Translation</span>
-                                <span id="engineBadge" class="text-[10px] px-2 py-0.5 rounded bg-slate-200/80 dark:bg-slate-700 text-slate-600 dark:text-slate-300">MyMemory Engine</span>
+                                <span id="engineBadge" class="text-[10px] px-2 py-0.5 rounded bg-slate-200/80 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Google Translate</span>
                             </div>
 
-                            <div id="targetText" class="w-full min-h-[140px] text-slate-800 dark:text-slate-100 text-base overflow-y-auto custom-scrollbar select-text leading-relaxed">
-                                <span class="text-slate-400 italic">Translation will appear here...</span>
+                            <div class="flex-grow overflow-y-auto custom-scrollbar max-h-[260px] min-h-[140px]">
+                                <div id="targetText" class="w-full text-slate-800 dark:text-slate-100 text-base select-text leading-relaxed whitespace-pre-wrap break-words">
+                                    <span class="text-slate-400 italic">Translation will appear here...</span>
+                                </div>
+                                <div id="translitText" class="hidden mt-2 text-sm italic text-slate-500 dark:text-slate-400 whitespace-pre-wrap break-words select-text"></div>
                             </div>
 
                             <div class="flex items-center justify-between pt-3 mt-auto border-t border-slate-200/60 dark:border-slate-700/50">
@@ -204,15 +201,24 @@
 
                     <!-- Action Bar -->
                     <div class="mt-4 pt-3 flex flex-wrap items-center justify-between gap-3">
-                        <div class="flex items-center space-x-2">
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="autoTranslateToggle" class="sr-only peer" checked>
-                                <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:after:border-slate-600 peer-checked:bg-indigo-600"></div>
-                            </label>
-                            <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Auto-translate on typing</span>
+                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+                            <div class="flex items-center space-x-2">
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="autoTranslateToggle" class="sr-only peer" checked>
+                                    <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:after:border-slate-600 peer-checked:bg-indigo-600"></div>
+                                </label>
+                                <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Auto-translate on typing</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="autoSpeakToggle" class="sr-only peer" checked>
+                                    <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:after:border-slate-600 peer-checked:bg-indigo-600"></div>
+                                </label>
+                                <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Speak translation after voice input</span>
+                            </div>
                         </div>
 
-                        <button id="translateBtn" class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-medium rounded-xl shadow-md shadow-indigo-500/20 active:scale-95 transition-all flex items-center space-x-2">
+                        <button id="translateBtn" class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-medium rounded-xl shadow-md shadow-indigo-500/20 active:scale-95 transition-all flex items-center space-x-2" title="Ctrl + Enter">
                             <i class="fa-solid fa-bolt"></i>
                             <span>Translate Now</span>
                         </button>
@@ -240,7 +246,7 @@
                             <input id="historySearchInput" type="text" placeholder="Search saved translations..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-100 dark:bg-slate-800 rounded-lg border border-transparent focus:border-indigo-500 outline-none text-slate-700 dark:text-slate-200">
                             <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
                         </div>
-                        
+
                         <div class="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-lg text-xs font-medium">
                             <button id="tabAll" class="flex-1 py-1 text-center rounded-md bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-indigo-300 transition-all">All (<span id="countAll">0</span>)</button>
                             <button id="tabFavorites" class="flex-1 py-1 text-center rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-all"><i class="fa-solid fa-star text-amber-400 mr-1"></i>Starred (<span id="countFav">0</span>)</button>
@@ -260,7 +266,7 @@
 
         <!-- Footer -->
         <footer class="mt-auto py-4 text-center text-xs text-slate-400 dark:text-slate-500">
-            <p>LingoPulse Universal Translator &bull; Searchable Pickers & Dual TTS Fallback &bull; Firestore Backend</p>
+            <p>LingoPulse Universal Translator &bull; Voice Input &amp; Dual Voice Output &bull; Firestore Backend</p>
         </footer>
     </div>
 
@@ -281,9 +287,7 @@
             </div>
 
             <!-- Scrollable Languages List -->
-            <div id="langPickerList" class="flex-grow overflow-y-auto custom-scrollbar space-y-1 pr-1">
-                <!-- Populated dynamically -->
-            </div>
+            <div id="langPickerList" class="flex-grow overflow-y-auto custom-scrollbar space-y-1 pr-1"></div>
         </div>
     </div>
 
@@ -294,7 +298,7 @@
                 <i class="fa-solid fa-triangle-exclamation text-xl"></i>
             </div>
             <h3 class="text-center text-base font-bold text-slate-800 dark:text-slate-100 mb-1">Clear Translation History?</h3>
-            <p class="text-center text-xs text-slate-500 dark:text-slate-400 mb-5">This action will remove all history records stored in your Firestore database. This cannot be undone.</p>
+            <p class="text-center text-xs text-slate-500 dark:text-slate-400 mb-5">This will remove all of your saved translations. This cannot be undone.</p>
             <div class="flex items-center space-x-3">
                 <button id="cancelModalBtn" class="flex-1 py-2 px-4 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 transition-colors">Cancel</button>
                 <button id="confirmClearBtn" class="flex-1 py-2 px-4 rounded-xl text-xs font-semibold bg-red-600 hover:bg-red-700 text-white shadow-md transition-colors">Clear All</button>
@@ -309,7 +313,14 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc, serverTimestamp, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc, serverTimestamp, getDocs, writeBatch, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // ------------------------------------------------------------------
+        // Settings
+        // ------------------------------------------------------------------
+        // true  = each visitor only sees / clears their OWN history (recommended)
+        // false = everyone shares one public history (old behaviour)
+        const SCOPE_HISTORY_TO_USER = true;
 
         // Firebase Configuration
         const firebaseConfig = {
@@ -330,7 +341,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // 35+ Languages with precise Native Script Names and BCP-47 Locale Mapping
+        // Languages: name, native name, flag, BCP-47 code used for voice in/out
         const LANGUAGES = [
             { code: 'auto', name: 'Auto Detect', native: '✨ Automatic', flag: '✨', tts: 'en-US' },
             { code: 'en', name: 'English', native: 'English', flag: '🇺🇸', tts: 'en-US' },
@@ -343,7 +354,10 @@
             { code: 'mr', name: 'Marathi', native: 'मराठी', flag: '🇮🇳', tts: 'mr-IN' },
             { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી', flag: '🇮🇳', tts: 'gu-IN' },
             { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ', flag: '🇮🇳', tts: 'pa-IN' },
+            { code: 'or', name: 'Odia', native: 'ଓଡ଼ିଆ', flag: '🇮🇳', tts: 'or-IN' },
             { code: 'ur', name: 'Urdu', native: 'اردو', flag: '🇵🇰', tts: 'ur-PK' },
+            { code: 'ne', name: 'Nepali', native: 'नेपाली', flag: '🇳🇵', tts: 'ne-NP' },
+            { code: 'si', name: 'Sinhala', native: 'සිංහල', flag: '🇱🇰', tts: 'si-LK' },
             { code: 'es', name: 'Spanish', native: 'Español', flag: '🇪🇸', tts: 'es-ES' },
             { code: 'fr', name: 'French', native: 'Français', flag: '🇫🇷', tts: 'fr-FR' },
             { code: 'de', name: 'German', native: 'Deutsch', flag: '🇩🇪', tts: 'de-DE' },
@@ -354,6 +368,8 @@
             { code: 'ja', name: 'Japanese', native: '日本語', flag: '🇯🇵', tts: 'ja-JP' },
             { code: 'ko', name: 'Korean', native: '한국어', flag: '🇰🇷', tts: 'ko-KR' },
             { code: 'ar', name: 'Arabic', native: 'العربية', flag: '🇸🇦', tts: 'ar-SA' },
+            { code: 'fa', name: 'Persian', native: 'فارسی', flag: '🇮🇷', tts: 'fa-IR' },
+            { code: 'he', name: 'Hebrew', native: 'עברית', flag: '🇮🇱', tts: 'he-IL' },
             { code: 'tr', name: 'Turkish', native: 'Türkçe', flag: '🇹🇷', tts: 'tr-TR' },
             { code: 'nl', name: 'Dutch', native: 'Nederlands', flag: '🇳🇱', tts: 'nl-NL' },
             { code: 'pl', name: 'Polish', native: 'Polski', flag: '🇵🇱', tts: 'pl-PL' },
@@ -363,83 +379,229 @@
             { code: 'id', name: 'Indonesian', native: 'Bahasa Indonesia', flag: '🇮🇩', tts: 'id-ID' },
             { code: 'ms', name: 'Malay', native: 'Bahasa Melayu', flag: '🇲🇾', tts: 'ms-MY' },
             { code: 'sv', name: 'Swedish', native: 'Svenska', flag: '🇸🇪', tts: 'sv-SE' },
+            { code: 'da', name: 'Danish', native: 'Dansk', flag: '🇩🇰', tts: 'da-DK' },
+            { code: 'fi', name: 'Finnish', native: 'Suomi', flag: '🇫🇮', tts: 'fi-FI' },
+            { code: 'no', name: 'Norwegian', native: 'Norsk', flag: '🇳🇴', tts: 'nb-NO' },
             { code: 'el', name: 'Greek', native: 'Ελληνικά', flag: '🇬🇷', tts: 'el-GR' },
             { code: 'cs', name: 'Czech', native: 'Čeština', flag: '🇨🇿', tts: 'cs-CZ' },
             { code: 'ro', name: 'Romanian', native: 'Română', flag: '🇷🇴', tts: 'ro-RO' },
             { code: 'hu', name: 'Hungarian', native: 'Magyar', flag: '🇭🇺', tts: 'hu-HU' },
+            { code: 'bg', name: 'Bulgarian', native: 'Български', flag: '🇧🇬', tts: 'bg-BG' },
+            { code: 'sw', name: 'Swahili', native: 'Kiswahili', flag: '🇰🇪', tts: 'sw-KE' },
             { code: 'tl', name: 'Filipino', native: 'Tagalog', flag: '🇵🇭', tts: 'fil-PH' }
         ];
+        const RTL_LANGS = ['ar', 'ur', 'fa', 'he'];
 
-        // State Variables
+        // ------------------------------------------------------------------
+        // State
+        // ------------------------------------------------------------------
         let currentSourceLang = 'auto';
         let currentTargetLang = 'es';
-        let pickerTargetMode = 'source'; // 'source' or 'target'
-        
+        let pickerTargetMode = 'source';
+
         let translationsHistory = [];
-        let activeTab = 'all'; // 'all' or 'favorites'
+        let activeTab = 'all';
         let currentTranslationResult = null;
+        let outputText = '';              // plain translated text currently shown
+        let lastDetected = null;          // language code detected when source = auto
+
         let autoTranslateTimeout = null;
-        let isCloudAvailable = true;
-        let speechRecognition = null;
+        let autoSaveTimeout = null;
+        let translateSeq = 0;
+        let translateController = null;
+
+        let isCloudAvailable = false;
+        let currentUid = null;
+        let historyQuery = null;
+
+        let recognition = null;
         let isRecording = false;
+
+        let availableVoices = [];
         let activeSpeakingBtn = null;
         let fallbackAudioObj = null;
+        let currentUtterance = null;
+        let speakToken = 0;
 
-        // Mandated Firestore Collection Path per Rule 1
         const translationsColRef = collection(db, 'artifacts', appId, 'public', 'data', 'translations');
 
-        // DOM Element Cache
-        const openSourcePickerBtn = document.getElementById('openSourcePickerBtn');
-        const openTargetPickerBtn = document.getElementById('openTargetPickerBtn');
-        const sourceLangDisplay = document.getElementById('sourceLangDisplay');
-        const targetLangDisplay = document.getElementById('targetLangDisplay');
-        const swapLangBtn = document.getElementById('swapLangBtn');
-        
-        const langPickerModal = document.getElementById('langPickerModal');
-        const langPickerTitle = document.getElementById('langPickerTitle');
-        const langPickerSearchInput = document.getElementById('langPickerSearchInput');
-        const langPickerList = document.getElementById('langPickerList');
-        const closeLangPickerBtn = document.getElementById('closeLangPickerBtn');
+        // ------------------------------------------------------------------
+        // DOM cache
+        // ------------------------------------------------------------------
+        const $ = (id) => document.getElementById(id);
+        const openSourcePickerBtn = $('openSourcePickerBtn');
+        const openTargetPickerBtn = $('openTargetPickerBtn');
+        const sourceLangDisplay = $('sourceLangDisplay');
+        const targetLangDisplay = $('targetLangDisplay');
+        const swapLangBtn = $('swapLangBtn');
+        const langPickerModal = $('langPickerModal');
+        const langPickerTitle = $('langPickerTitle');
+        const langPickerSearchInput = $('langPickerSearchInput');
+        const langPickerList = $('langPickerList');
+        const closeLangPickerBtn = $('closeLangPickerBtn');
+        const sourceText = $('sourceText');
+        const targetText = $('targetText');
+        const translitText = $('translitText');
+        const translateBtn = $('translateBtn');
+        const autoTranslateToggle = $('autoTranslateToggle');
+        const autoSpeakToggle = $('autoSpeakToggle');
+        const charCounter = $('charCounter');
+        const loadingOverlay = $('loadingOverlay');
+        const detectedLangTag = $('detectedLangTag');
+        const engineBadge = $('engineBadge');
+        const speakSourceBtn = $('speakSourceBtn');
+        const speakTargetBtn = $('speakTargetBtn');
+        const copySourceBtn = $('copySourceBtn');
+        const copyTargetBtn = $('copyTargetBtn');
+        const clearSourceBtn = $('clearSourceBtn');
+        const micBtn = $('micBtn');
+        const favoriteCurrentBtn = $('favoriteCurrentBtn');
+        const historyList = $('historyList');
+        const historySearchInput = $('historySearchInput');
+        const tabAll = $('tabAll');
+        const tabFavorites = $('tabFavorites');
+        const countAll = $('countAll');
+        const countFav = $('countFav');
+        const clearAllHistoryBtn = $('clearAllHistoryBtn');
+        const confirmModal = $('confirmModal');
+        const cancelModalBtn = $('cancelModalBtn');
+        const confirmClearBtn = $('confirmClearBtn');
+        const themeToggleBtn = $('themeToggleBtn');
+        const themeIcon = $('themeIcon');
+        const syncBadge = $('syncBadge');
+        const syncDot = $('syncDot');
+        const syncStatusText = $('syncStatusText');
 
-        const sourceText = document.getElementById('sourceText');
-        const targetText = document.getElementById('targetText');
-        const translateBtn = document.getElementById('translateBtn');
-        const autoTranslateToggle = document.getElementById('autoTranslateToggle');
-        const charCounter = document.getElementById('charCounter');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const detectedLangTag = document.getElementById('detectedLangTag');
-        const engineBadge = document.getElementById('engineBadge');
-        
-        const speakSourceBtn = document.getElementById('speakSourceBtn');
-        const speakTargetBtn = document.getElementById('speakTargetBtn');
-        const copySourceBtn = document.getElementById('copySourceBtn');
-        const copyTargetBtn = document.getElementById('copyTargetBtn');
-        const clearSourceBtn = document.getElementById('clearSourceBtn');
-        const micBtn = document.getElementById('micBtn');
-        const favoriteCurrentBtn = document.getElementById('favoriteCurrentBtn');
-
-        const historyList = document.getElementById('historyList');
-        const historySearchInput = document.getElementById('historySearchInput');
-        const tabAll = document.getElementById('tabAll');
-        const tabFavorites = document.getElementById('tabFavorites');
-        const countAll = document.getElementById('countAll');
-        const countFav = document.getElementById('countFav');
-        const clearAllHistoryBtn = document.getElementById('clearAllHistoryBtn');
-        const confirmModal = document.getElementById('confirmModal');
-        const cancelModalBtn = document.getElementById('cancelModalBtn');
-        const confirmClearBtn = document.getElementById('confirmClearBtn');
-        
-        const themeToggleBtn = document.getElementById('themeToggleBtn');
-        const themeIcon = document.getElementById('themeIcon');
-        const syncBadge = document.getElementById('syncBadge');
-        const syncStatusText = document.getElementById('syncStatusText');
-
-        // Theme Management
-        function initTheme() {
-            const savedTheme = localStorage.getItem('lingo_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            applyTheme(savedTheme);
+        // ------------------------------------------------------------------
+        // Small helpers
+        // ------------------------------------------------------------------
+        function escapeHtml(str) {
+            return String(str ?? '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
+        function decodeEntities(str) {
+            const t = document.createElement('textarea');
+            t.innerHTML = str;
+            return t.value;
+        }
+
+        function timeAgo(date) {
+            if (!date) return 'Just now';
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 30) return 'Just now';
+            if (seconds < 60) return `${seconds}s ago`;
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes}m ago`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours}h ago`;
+            const days = Math.floor(hours / 24);
+            if (days < 7) return `${days}d ago`;
+            return date.toLocaleDateString();
+        }
+
+        // Find a language entry from any code ("ta", "zh-CN", "zh", "ta-IN", "iw" ...)
+        function findLang(code) {
+            if (!code) return null;
+            const c = String(code).toLowerCase();
+            const alias = { iw: 'he', jw: 'jv', nb: 'no', fil: 'tl' };
+            const base = alias[c.split('-')[0]] || c.split('-')[0];
+            return LANGUAGES.find(l => l.code.toLowerCase() === c)
+                || LANGUAGES.find(l => l.code.toLowerCase() === (alias[c] || c))
+                || LANGUAGES.find(l => l.code.toLowerCase().split('-')[0] === base)
+                || null;
+        }
+
+        // Split long text into safe-size pieces (keeps line breaks, prefers sentence boundaries)
+        function splitText(text, max, measure = (s) => s.length) {
+            const out = [];
+            const push = (s) => { if (s) out.push(s); };
+            const hard = (s) => {
+                let buf = '';
+                for (const ch of s) {
+                    if (measure(buf + ch) > max) { push(buf); buf = ch; } else { buf += ch; }
+                }
+                push(buf);
+            };
+            for (const part of text.split(/(\n+)/)) {
+                if (!part) continue;
+                if (/^\n+$/.test(part) || measure(part) <= max) { push(part); continue; }
+                const sentences = part.match(/[^.!?।۔。！？]+[.!?।۔。！？]*\s*|[.!?।۔。！？]+\s*/g) || [part];
+                let buf = '';
+                for (const s of sentences) {
+                    if (measure(s) > max) {
+                        push(buf); buf = '';
+                        let w = '';
+                        for (const word of s.split(/(\s+)/)) {
+                            if (measure(w + word) > max) {
+                                push(w); w = '';
+                                if (measure(word) > max) hard(word); else w = word;
+                            } else { w += word; }
+                        }
+                        push(w);
+                    } else if (measure(buf + s) > max) {
+                        push(buf); buf = s;
+                    } else {
+                        buf += s;
+                    }
+                }
+                push(buf);
+            }
+            return out;
+        }
+
+        async function mapLimit(items, limit, fn) {
+            const results = new Array(items.length);
+            let idx = 0;
+            const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+                while (idx < items.length) {
+                    const i = idx++;
+                    results[i] = await fn(items[i], i);
+                }
+            });
+            await Promise.all(workers);
+            return results;
+        }
+
+        async function fetchJson(url, outerSignal, timeoutMs = 12000) {
+            const ctrl = new AbortController();
+            const onAbort = () => ctrl.abort();
+            if (outerSignal) outerSignal.addEventListener('abort', onAbort);
+            const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+            try {
+                const res = await fetch(url, { signal: ctrl.signal });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                return await res.json();
+            } finally {
+                clearTimeout(timer);
+                if (outerSignal) outerSignal.removeEventListener('abort', onAbort);
+            }
+        }
+
+        // ------------------------------------------------------------------
+        // Toasts
+        // ------------------------------------------------------------------
+        function showToast(message, type = 'info', duration = 3200) {
+            const toastContainer = $('toastContainer');
+            const toast = document.createElement('div');
+            const bgClass = "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900";
+            let iconClass = "fa-circle-info text-indigo-400";
+            if (type === 'success') iconClass = "fa-circle-check text-emerald-400";
+            else if (type === 'error') iconClass = "fa-circle-exclamation text-red-400";
+            else if (type === 'warning') iconClass = "fa-triangle-exclamation text-amber-400";
+
+            toast.className = `pointer-events-auto flex items-start space-x-2.5 px-4 py-2.5 rounded-xl shadow-xl text-xs font-medium max-w-xs transform transition-all duration-300 opacity-0 translate-y-2 ${bgClass}`;
+            toast.innerHTML = `<i class="fa-solid ${iconClass} text-sm mt-0.5"></i><span>${escapeHtml(message)}</span>`;
+            toastContainer.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.remove('opacity-0', 'translate-y-2'));
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.parentNode && toast.parentNode.removeChild(toast), 300);
+            }, duration);
+        }
+
+        // ------------------------------------------------------------------
+        // Theme
+        // ------------------------------------------------------------------
         function applyTheme(theme) {
             if (theme === 'dark') {
                 document.documentElement.classList.add('dark');
@@ -448,21 +610,27 @@
                 document.documentElement.classList.remove('dark');
                 themeIcon.className = 'fa-solid fa-moon text-lg';
             }
-            localStorage.setItem('lingo_theme', theme);
+            try { localStorage.setItem('lingo_theme', theme); } catch (e) { /* ignore */ }
+        }
+
+        function initTheme() {
+            let saved = null;
+            try { saved = localStorage.getItem('lingo_theme'); } catch (e) { /* ignore */ }
+            applyTheme(saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
         }
 
         themeToggleBtn.addEventListener('click', () => {
-            const isDark = document.documentElement.classList.contains('dark');
-            applyTheme(isDark ? 'light' : 'dark');
+            applyTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark');
         });
 
-        // Searchable Language Picker Logic
+        // ------------------------------------------------------------------
+        // Language picker
+        // ------------------------------------------------------------------
         function updateLangDisplayUI() {
             const srcObj = LANGUAGES.find(l => l.code === currentSourceLang) || LANGUAGES[0];
-            sourceLangDisplay.innerHTML = `<span>${srcObj.flag}</span><span class="truncate">${srcObj.name} ${srcObj.native && srcObj.code !== 'auto' ? `(${srcObj.native})` : ''}</span>`;
-
+            sourceLangDisplay.innerHTML = `<span>${srcObj.flag}</span><span class="truncate">${escapeHtml(srcObj.name)} ${srcObj.code !== 'auto' ? `(${escapeHtml(srcObj.native)})` : ''}</span>`;
             const tgtObj = LANGUAGES.find(l => l.code === currentTargetLang) || LANGUAGES[1];
-            targetLangDisplay.innerHTML = `<span>${tgtObj.flag}</span><span class="truncate">${tgtObj.name} (${tgtObj.native})</span>`;
+            targetLangDisplay.innerHTML = `<span>${tgtObj.flag}</span><span class="truncate">${escapeHtml(tgtObj.name)} (${escapeHtml(tgtObj.native)})</span>`;
         }
 
         function openLanguagePicker(mode) {
@@ -475,275 +643,397 @@
             setTimeout(() => langPickerSearchInput.focus(), 100);
         }
 
+        function closeLanguagePicker() {
+            langPickerModal.classList.add('hidden');
+            langPickerModal.classList.remove('flex');
+        }
+
         function renderLanguagePickerList(filterText = '') {
-            const query = filterText.toLowerCase().trim();
+            const q = filterText.toLowerCase().trim();
             langPickerList.innerHTML = '';
 
-            const availableLangs = LANGUAGES.filter(l => {
-                if (pickerTargetMode === 'target' && l.code === 'auto') return false; // Target cannot be Auto Detect
-                if (!query) return true;
-                return l.name.toLowerCase().includes(query) ||
-                       l.native.toLowerCase().includes(query) ||
-                       l.code.toLowerCase().includes(query);
+            const list = LANGUAGES.filter(l => {
+                if (pickerTargetMode === 'target' && l.code === 'auto') return false;
+                if (!q) return true;
+                return l.name.toLowerCase().includes(q) || l.native.toLowerCase().includes(q) || l.code.toLowerCase().includes(q);
             });
 
-            if (availableLangs.length === 0) {
+            if (list.length === 0) {
                 langPickerList.innerHTML = `<div class="p-4 text-center text-xs text-slate-400">No matching languages found</div>`;
                 return;
             }
 
-            availableLangs.forEach(lang => {
+            list.forEach(lang => {
                 const isSelected = (pickerTargetMode === 'source' && lang.code === currentSourceLang) ||
                                    (pickerTargetMode === 'target' && lang.code === currentTargetLang);
-
-                const itemBtn = document.createElement('button');
-                itemBtn.type = 'button';
-                itemBtn.className = `w-full flex items-center justify-between p-2.5 rounded-xl text-left text-sm font-medium transition-colors ${
-                    isSelected ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-semibold' : 'hover:bg-slate-100 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-200'
-                }`;
-
-                itemBtn.innerHTML = `
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `w-full flex items-center justify-between p-2.5 rounded-xl text-left text-sm font-medium transition-colors ${
+                    isSelected ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-semibold' : 'hover:bg-slate-100 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-200'}`;
+                btn.innerHTML = `
                     <div class="flex items-center space-x-3 truncate">
                         <span class="text-base">${lang.flag}</span>
-                        <span class="truncate">${lang.name}</span>
-                        ${lang.native && lang.code !== 'auto' ? `<span class="text-xs text-slate-400 font-normal truncate">(${lang.native})</span>` : ''}
+                        <span class="truncate">${escapeHtml(lang.name)}</span>
+                        ${lang.code !== 'auto' ? `<span class="text-xs text-slate-400 font-normal truncate">(${escapeHtml(lang.native)})</span>` : ''}
                     </div>
-                    ${isSelected ? `<i class="fa-solid fa-check text-xs text-indigo-600 dark:text-indigo-400"></i>` : ''}
-                `;
+                    ${isSelected ? `<i class="fa-solid fa-check text-xs text-indigo-600 dark:text-indigo-400"></i>` : ''}`;
 
-                itemBtn.addEventListener('click', () => {
+                btn.addEventListener('click', () => {
                     if (pickerTargetMode === 'source') {
                         currentSourceLang = lang.code;
+                        lastDetected = null;
+                        detectedLangTag.classList.add('hidden');
                     } else {
                         currentTargetLang = lang.code;
                     }
                     updateLangDisplayUI();
                     closeLanguagePicker();
-
                     if (sourceText.value.trim() && autoTranslateToggle.checked) {
-                        handleTranslate();
+                        handleTranslate({ save: false });
                     }
                 });
-
-                langPickerList.appendChild(itemBtn);
+                langPickerList.appendChild(btn);
             });
-        }
-
-        function closeLanguagePicker() {
-            langPickerModal.classList.add('hidden');
-            langPickerModal.classList.remove('flex');
         }
 
         openSourcePickerBtn.addEventListener('click', () => openLanguagePicker('source'));
         openTargetPickerBtn.addEventListener('click', () => openLanguagePicker('target'));
         closeLangPickerBtn.addEventListener('click', closeLanguagePicker);
         langPickerSearchInput.addEventListener('input', (e) => renderLanguagePickerList(e.target.value));
+        langPickerModal.addEventListener('click', (e) => { if (e.target === langPickerModal) closeLanguagePicker(); });
+        confirmModal.addEventListener('click', (e) => { if (e.target === confirmModal) closeConfirmModal(); });
 
-        // Translation API Pipeline: Primary MyMemory -> Fallback Google GTX
-        async function performTranslation(text, source, target) {
-            if (!text.trim()) return null;
+        // ------------------------------------------------------------------
+        // TRANSLATION ENGINES
+        //   1) Google Translate (best quality, auto-detect, transliteration)
+        //   2) MyMemory (backup)
+        // Long text is split into pieces so nothing gets cut off.
+        // ------------------------------------------------------------------
+        async function googleEngine(text, source, target, signal) {
+            const chunks = splitText(text, 2800, (s) => encodeURIComponent(s).length);
+            let detected = null;
 
-            // Engine 1: MyMemory Translation API
-            try {
-                const langpair = `${source === 'auto' ? 'autodetect' : source}|${target}`;
-                const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${langpair}`;
-                const response = await fetch(url);
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data && data.responseData && data.responseData.translatedText) {
-                        const resText = data.responseData.translatedText;
-                        if (resText && !resText.includes("INVALID LANGUAGE PAIR")) {
-                            return {
-                                translatedText: resText,
-                                detectedLang: data.responseData.detectedLanguage || null,
-                                engine: 'MyMemory API'
-                            };
-                        }
-                    }
+            const outs = await mapLimit(chunks, 4, async (chunk) => {
+                if (!chunk.trim()) return { t: chunk, r: chunk };
+                const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${encodeURIComponent(source)}&tl=${encodeURIComponent(target)}&dt=t&dt=rm&q=${encodeURIComponent(chunk)}`;
+                const data = await fetchJson(url, signal);
+                if (!data || !Array.isArray(data[0])) throw new Error('Unexpected Google response');
+
+                let t = '', r = '';
+                for (const seg of data[0]) {
+                    if (seg && seg[0]) t += seg[0];
+                    if (seg && seg[2] && typeof seg[2] === 'string') r += seg[2];
                 }
-            } catch (err) {
-                console.warn("MyMemory engine issue, attempting Google fallback:", err);
-            }
+                if (!t) throw new Error('Empty Google response');
+                if (!detected && typeof data[2] === 'string') detected = data[2];
 
-            // Engine 2: Google GTX Endpoint Fallback
-            try {
-                const sl = source === 'auto' ? 'auto' : source;
-                const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${target}&dt=t&q=${encodeURIComponent(text)}`;
-                const response = await fetch(url);
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data && data[0]) {
-                        const translatedTextResult = data[0].map(item => item[0] || '').join('');
-                        const detected = (source === 'auto' && data[2]) ? data[2] : null;
-                        return {
-                            translatedText: translatedTextResult,
-                            detectedLang: detected,
-                            engine: 'Google Engine'
-                        };
-                    }
-                }
-            } catch (err) {
-                console.error("Both translation engines failed:", err);
-            }
+                const trail = chunk.match(/\s*$/)[0];
+                const lead = chunk.match(/^\s*/)[0];
+                return { t: lead + t.trim() + trail, r: r.trim() ? r.trim() + trail : '' };
+            });
 
-            throw new Error("Translation failed. Please check network connection.");
+            const translated = outs.map(o => o.t).join('').trim();
+            const translit = outs.map(o => o.r).join('').trim();
+            return { translatedText: translated, translit, detectedLang: detected, engine: 'Google Translate' };
         }
 
-        async function handleTranslate() {
+        async function myMemoryEngine(text, source, target, signal) {
+            const chunks = splitText(text, 450, (s) => new TextEncoder().encode(s).length);
+            const pair = `${source === 'auto' ? 'Autodetect' : source}|${target}`;
+            let detected = null;
+
+            const outs = await mapLimit(chunks, 2, async (chunk) => {
+                if (!chunk.trim()) return chunk;
+                const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(chunk)}&langpair=${encodeURIComponent(pair)}`;
+                const data = await fetchJson(url, signal);
+                const status = Number(data && data.responseStatus);
+                const raw = (data && data.responseData && data.responseData.translatedText) || '';
+                // MyMemory puts error / quota messages inside translatedText – never show those as a translation
+                if (status !== 200 || !raw || /MYMEMORY WARNING|INVALID LANGUAGE|PLEASE SELECT|QUERY LENGTH|NO QUERY|INVALID EMAIL/i.test(raw)) {
+                    throw new Error('MyMemory: ' + (typeof (data && data.responseDetails) === 'string' ? data.responseDetails : 'bad response'));
+                }
+                if (!detected && data.responseData.detectedLanguage) detected = data.responseData.detectedLanguage;
+                const trail = chunk.match(/\s*$/)[0];
+                const lead = chunk.match(/^\s*/)[0];
+                return lead + decodeEntities(raw).trim() + trail;
+            });
+
+            return { translatedText: outs.join('').trim(), translit: '', detectedLang: detected, engine: 'MyMemory (backup)' };
+        }
+
+        async function performTranslation(text, source, target, signal) {
+            if (!text.trim()) return null;
+            if (source !== 'auto' && source === target) {
+                return { translatedText: text, translit: '', detectedLang: null, engine: 'Same language' };
+            }
+            let lastErr = null;
+            for (const engine of [googleEngine, myMemoryEngine]) {
+                try {
+                    return await engine(text, source, target, signal);
+                } catch (err) {
+                    if (signal && signal.aborted) throw err;
+                    lastErr = err;
+                    console.warn(`${engine.name} failed:`, err);
+                }
+            }
+            console.error('All translation engines failed:', lastErr);
+            throw new Error(navigator.onLine ? 'Translation failed. The service may be busy – please try again.' : 'You appear to be offline. Check your internet connection.');
+        }
+
+        // ------------------------------------------------------------------
+        // Output rendering
+        // ------------------------------------------------------------------
+        function showPlaceholder() {
+            outputText = '';
+            targetText.innerHTML = '<span class="text-slate-400 italic">Translation will appear here...</span>';
+            targetText.removeAttribute('dir');
+            translitText.classList.add('hidden');
+            translitText.textContent = '';
+        }
+
+        function renderOutput(text, translit, langCode) {
+            outputText = text;
+            targetText.textContent = text;
+            targetText.dir = RTL_LANGS.includes((langCode || '').split('-')[0]) ? 'rtl' : 'ltr';
+            if (translit && translit.trim() && translit.trim() !== text.trim()) {
+                translitText.textContent = translit;
+                translitText.classList.remove('hidden');
+            } else {
+                translitText.textContent = '';
+                translitText.classList.add('hidden');
+            }
+        }
+
+        function updateStarButtonState(isFav) {
+            const icon = favoriteCurrentBtn.querySelector('i');
+            if (icon) icon.className = isFav ? "fa-solid fa-star text-amber-400 text-lg" : "fa-regular fa-star text-amber-400 text-lg";
+        }
+
+        // ------------------------------------------------------------------
+        // Main translate flow
+        // ------------------------------------------------------------------
+        async function handleTranslate({ save = true, speak = false } = {}) {
+            clearTimeout(autoTranslateTimeout);
+            clearTimeout(autoSaveTimeout);
+
             const text = sourceText.value.trim();
             const source = currentSourceLang;
             const target = currentTargetLang;
 
+            if (translateController) translateController.abort();
+
             if (!text) {
-                targetText.innerHTML = '<span class="text-slate-400 italic">Translation will appear here...</span>';
+                translateSeq++;
+                loadingOverlay.classList.add('hidden');
+                showPlaceholder();
                 detectedLangTag.classList.add('hidden');
                 currentTranslationResult = null;
                 updateStarButtonState(false);
                 return;
             }
 
+            const seq = ++translateSeq;
+            translateController = new AbortController();
             loadingOverlay.classList.remove('hidden');
 
             try {
-                const result = await performTranslation(text, source, target);
-                if (result) {
-                    targetText.textContent = result.translatedText;
-                    engineBadge.textContent = result.engine;
+                const result = await performTranslation(text, source, target, translateController.signal);
+                if (seq !== translateSeq || !result) return; // a newer request replaced this one
 
-                    let effectiveSource = source;
-                    if (source === 'auto' && result.detectedLang) {
-                        effectiveSource = result.detectedLang;
-                        const matchedLang = LANGUAGES.find(l => l.code === result.detectedLang);
-                        detectedLangTag.textContent = `Detected: ${matchedLang ? matchedLang.name : result.detectedLang}`;
-                        detectedLangTag.classList.remove('hidden');
-                    } else if (source === 'auto') {
-                        detectedLangTag.textContent = `Detected: Auto`;
-                        detectedLangTag.classList.remove('hidden');
-                    } else {
-                        detectedLangTag.classList.add('hidden');
-                    }
+                renderOutput(result.translatedText, result.translit, target);
+                engineBadge.textContent = result.engine;
 
-                    const srcObj = LANGUAGES.find(l => l.code === effectiveSource) || { name: effectiveSource };
-                    const tgtObj = LANGUAGES.find(l => l.code === target) || { name: target };
-
-                    currentTranslationResult = {
-                        inputText: text,
-                        translatedText: result.translatedText,
-                        sourceLang: effectiveSource,
-                        targetLang: target,
-                        sourceLangName: srcObj.name,
-                        targetLangName: tgtObj.name,
-                        isFavorite: false,
-                        timestamp: new Date()
-                    };
-
-                    updateStarButtonState(false);
-                    await saveTranslationToFirestore(currentTranslationResult);
+                let effectiveSource = source;
+                if (source === 'auto') {
+                    const det = result.detectedLang;
+                    const matched = findLang(det);
+                    lastDetected = matched ? matched.code : (det || null);
+                    effectiveSource = lastDetected || 'auto';
+                    detectedLangTag.textContent = `Detected: ${matched ? matched.name : (det || 'Auto')}`;
+                    detectedLangTag.classList.remove('hidden');
+                } else {
+                    lastDetected = null;
+                    detectedLangTag.classList.add('hidden');
                 }
+
+                const srcObj = LANGUAGES.find(l => l.code === effectiveSource) || { name: effectiveSource };
+                const tgtObj = LANGUAGES.find(l => l.code === target) || { name: target };
+
+                currentTranslationResult = {
+                    inputText: text,
+                    translatedText: result.translatedText,
+                    sourceLang: effectiveSource,
+                    targetLang: target,
+                    sourceLangName: srcObj.name,
+                    targetLangName: tgtObj.name,
+                    isFavorite: false,
+                    timestamp: new Date()
+                };
+                updateStarButtonState(false);
+
+                if (save) {
+                    await persistCurrent();
+                } else {
+                    // typing / language change: save once the user pauses, so history isn't spammed with half-sentences
+                    autoSaveTimeout = setTimeout(persistCurrent, 2500);
+                }
+
+                if (speak) speakText(result.translatedText, target, speakTargetBtn);
             } catch (error) {
+                if (error && error.name === 'AbortError' && seq !== translateSeq) return;
                 showToast(error.message || "Translation error occurred.", "error");
             } finally {
-                loadingOverlay.classList.add('hidden');
+                if (seq === translateSeq) loadingOverlay.classList.add('hidden');
             }
         }
 
-        // Firebase Authentication & Real-time Subscription Setup
+        // ------------------------------------------------------------------
+        // Firebase auth + realtime history
+        // ------------------------------------------------------------------
+        function setSyncState(state) {
+            const base = "flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs font-medium border ";
+            if (state === 'synced') {
+                syncBadge.className = base + "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/50";
+                syncDot.className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
+                syncStatusText.textContent = "Cloud Synced";
+            } else if (state === 'local') {
+                syncBadge.className = base + "bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800/50";
+                syncDot.className = "w-2 h-2 rounded-full bg-amber-500";
+                syncStatusText.textContent = "Local Backup";
+            } else {
+                syncBadge.className = base + "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700";
+                syncDot.className = "w-2 h-2 rounded-full bg-slate-400 animate-pulse";
+                syncStatusText.textContent = "Connecting Cloud...";
+            }
+        }
+
         async function initFirebaseAndSync() {
+            setSyncState('connecting');
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await signInWithCustomToken(auth, __initial_auth_token);
                 } else {
                     await signInAnonymously(auth);
                 }
+                currentUid = auth.currentUser ? auth.currentUser.uid : null;
 
-                onSnapshot(translationsColRef, (snapshot) => {
+                historyQuery = (SCOPE_HISTORY_TO_USER && currentUid)
+                    ? query(translationsColRef, where('uid', '==', currentUid))
+                    : translationsColRef;
+
+                onSnapshot(historyQuery, (snapshot) => {
                     const items = [];
                     snapshot.forEach(docSnap => {
                         const data = docSnap.data();
                         items.push({
                             id: docSnap.id,
                             ...data,
-                            text: data.inputText || data.text || '',
+                            inputText: data.inputText || data.text || '',
+                            translatedText: data.translatedText || '',
                             isFavorite: data.isFavorite !== undefined ? data.isFavorite : (data.favorite || false),
                             timestamp: data.timestamp && data.timestamp.toDate ? data.timestamp.toDate() : new Date(data.timestamp || Date.now())
                         });
                     });
-
                     items.sort((a, b) => b.timestamp - a.timestamp);
                     translationsHistory = items;
+                    isCloudAvailable = true;
+                    setSyncState('synced');
                     renderHistory();
 
-                    isCloudAvailable = true;
-                    syncBadge.className = "flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs font-medium bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50";
-                    syncStatusText.textContent = "Cloud Synced";
+                    // keep the star in sync with the cloud
+                    if (currentTranslationResult && currentTranslationResult.id) {
+                        const live = items.find(i => i.id === currentTranslationResult.id);
+                        if (live) {
+                            currentTranslationResult.isFavorite = live.isFavorite;
+                            updateStarButtonState(live.isFavorite);
+                        }
+                    }
                 }, (error) => {
-                    console.warn("Firestore snapshot listener error, using local fallback:", error);
+                    console.warn("Firestore listener error, using local backup:", error);
                     handleCloudFallback();
                 });
-
             } catch (err) {
-                console.warn("Firebase Auth / Initialization error:", err);
+                console.warn("Firebase Auth / init error, using local backup:", err);
                 handleCloudFallback();
             }
         }
 
         function handleCloudFallback() {
             isCloudAvailable = false;
-            syncBadge.className = "flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/50";
-            syncStatusText.textContent = "Local Backup";
-            
-            const localData = localStorage.getItem('lingo_local_history');
-            if (localData) {
-                try {
-                    translationsHistory = JSON.parse(localData).map(item => ({
-                        ...item,
-                        timestamp: new Date(item.timestamp)
-                    }));
-                    renderHistory();
-                } catch(e) { console.error(e); }
-            }
+            setSyncState('local');
+            try {
+                const localData = localStorage.getItem('lingo_local_history');
+                if (localData) {
+                    translationsHistory = JSON.parse(localData).map(item => ({ ...item, timestamp: new Date(item.timestamp) }));
+                }
+            } catch (e) { console.error(e); }
+            renderHistory();
         }
 
-        async function saveTranslationToFirestore(record) {
-            if (isCloudAvailable) {
-                try {
-                    const docData = {
-                        inputText: record.inputText,
-                        translatedText: record.translatedText,
-                        sourceLang: record.sourceLang,
-                        targetLang: record.targetLang,
-                        sourceLangName: record.sourceLangName,
-                        targetLangName: record.targetLangName,
-                        isFavorite: record.isFavorite || false,
-                        timestamp: serverTimestamp()
-                    };
-                    const newDoc = await addDoc(translationsColRef, docData);
-                    currentTranslationResult.id = newDoc.id;
-                } catch (e) {
-                    console.warn("Firestore addDoc failed, saving locally:", e);
-                    saveToLocalStorageHistory(record);
-                }
-            } else {
-                saveToLocalStorageHistory(record);
-            }
+        function persistLocal() {
+            try { localStorage.setItem('lingo_local_history', JSON.stringify(translationsHistory)); } catch (e) { /* ignore */ }
         }
 
         function saveToLocalStorageHistory(record) {
-            const newItem = { id: 'loc_' + Date.now(), ...record, text: record.inputText };
-            translationsHistory.unshift(newItem);
-            localStorage.setItem('lingo_local_history', JSON.stringify(translationsHistory));
+            const id = 'loc_' + Date.now();
+            record.id = id;
+            translationsHistory.unshift({ ...record, id, text: record.inputText });
+            persistLocal();
             renderHistory();
+        }
+
+        // Save the current translation once (skips duplicates)
+        async function persistCurrent() {
+            const r = currentTranslationResult;
+            if (!r || r.id || r.saving) return;
+
+            const dup = translationsHistory.find(h =>
+                (h.inputText || h.text) === r.inputText && h.targetLang === r.targetLang && h.sourceLang === r.sourceLang);
+            if (dup) {
+                r.id = dup.id;
+                r.isFavorite = !!dup.isFavorite;
+                updateStarButtonState(r.isFavorite);
+                return;
+            }
+
+            r.saving = true;
+            try {
+                if (isCloudAvailable) {
+                    try {
+                        const newDoc = await addDoc(translationsColRef, {
+                            inputText: r.inputText,
+                            translatedText: r.translatedText,
+                            sourceLang: r.sourceLang,
+                            targetLang: r.targetLang,
+                            sourceLangName: r.sourceLangName,
+                            targetLangName: r.targetLangName,
+                            isFavorite: r.isFavorite || false,
+                            uid: currentUid || null,
+                            timestamp: serverTimestamp()
+                        });
+                        r.id = newDoc.id;
+                    } catch (e) {
+                        console.warn("Firestore addDoc failed, saving locally:", e);
+                        saveToLocalStorageHistory(r);
+                    }
+                } else {
+                    saveToLocalStorageHistory(r);
+                }
+            } finally {
+                r.saving = false;
+            }
         }
 
         function renderHistory() {
             const searchQuery = historySearchInput.value.toLowerCase().trim();
 
-            let filtered = translationsHistory.filter(item => {
+            const filtered = translationsHistory.filter(item => {
                 const itemText = item.inputText || item.text || '';
+                const translated = item.translatedText || '';
                 const matchesTab = activeTab === 'all' || (activeTab === 'favorites' && item.isFavorite);
-                const matchesSearch = !searchQuery || 
-                    itemText.toLowerCase().includes(searchQuery) || 
-                    item.translatedText.toLowerCase().includes(searchQuery) ||
+                const matchesSearch = !searchQuery ||
+                    itemText.toLowerCase().includes(searchQuery) ||
+                    translated.toLowerCase().includes(searchQuery) ||
                     (item.sourceLangName && item.sourceLangName.toLowerCase().includes(searchQuery)) ||
                     (item.targetLangName && item.targetLangName.toLowerCase().includes(searchQuery));
                 return matchesTab && matchesSearch;
@@ -757,8 +1047,7 @@
                     <div class="text-center py-10 text-slate-400">
                         <i class="fa-solid fa-folder-open text-3xl mb-2 opacity-50"></i>
                         <p class="text-xs">No saved translations found.</p>
-                    </div>
-                `;
+                    </div>`;
                 return;
             }
 
@@ -767,16 +1056,16 @@
                 const card = document.createElement('div');
                 card.className = "bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200/60 dark:hover:bg-slate-700/60 border border-slate-200/80 dark:border-slate-700/50 rounded-xl p-3 transition-all duration-200 group";
 
-                const srcLangObj = LANGUAGES.find(l => l.code === item.sourceLang) || { name: item.sourceLangName || item.sourceLang, flag: '🌐' };
-                const tgtLangObj = LANGUAGES.find(l => l.code === item.targetLang) || { name: item.targetLangName || item.targetLang, flag: '🌐' };
+                const srcLangObj = findLang(item.sourceLang) || { name: item.sourceLangName || item.sourceLang, flag: '🌐' };
+                const tgtLangObj = findLang(item.targetLang) || { name: item.targetLangName || item.targetLang, flag: '🌐' };
                 const itemInput = item.inputText || item.text || '';
 
                 card.innerHTML = `
                     <div class="flex items-center justify-between mb-1.5">
                         <div class="flex items-center space-x-1.5 text-[11px] font-semibold text-slate-500 dark:text-slate-400">
-                            <span>${srcLangObj.flag} ${srcLangObj.name}</span>
+                            <span>${srcLangObj.flag} ${escapeHtml(srcLangObj.name)}</span>
                             <i class="fa-solid fa-arrow-right text-[9px] text-indigo-500"></i>
-                            <span>${tgtLangObj.flag} ${tgtLangObj.name}</span>
+                            <span>${tgtLangObj.flag} ${escapeHtml(tgtLangObj.name)}</span>
                         </div>
                         <div class="flex items-center space-x-1">
                             <button class="star-btn p-1 text-slate-400 hover:text-amber-400 transition-colors ${item.isFavorite ? 'text-amber-400' : ''}" title="Star item">
@@ -788,8 +1077,8 @@
                         </div>
                     </div>
 
-                    <p class="text-xs font-medium text-slate-800 dark:text-slate-200 line-clamp-2 mb-1">${escapeHtml(itemInput)}</p>
-                    <p class="text-xs text-indigo-600 dark:text-indigo-400 line-clamp-2 mb-2 font-medium">${escapeHtml(item.translatedText)}</p>
+                    <p dir="auto" class="text-xs font-medium text-slate-800 dark:text-slate-200 line-clamp-2 mb-1">${escapeHtml(itemInput)}</p>
+                    <p dir="auto" class="text-xs text-indigo-600 dark:text-indigo-400 line-clamp-2 mb-2 font-medium">${escapeHtml(item.translatedText)}</p>
 
                     <div class="flex items-center justify-between pt-1.5 border-t border-slate-200/50 dark:border-slate-700/40 text-[10px] text-slate-400">
                         <span>${timeAgo(item.timestamp)}</span>
@@ -797,18 +1086,19 @@
                             <button class="listen-btn hover:text-indigo-500 font-medium transition-colors"><i class="fa-solid fa-volume-high mr-1"></i>Listen</button>
                             <button class="use-btn hover:text-indigo-500 font-semibold transition-colors"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>Load</button>
                         </div>
-                    </div>
-                `;
+                    </div>`;
 
                 card.querySelector('.use-btn').addEventListener('click', () => {
-                    currentSourceLang = item.sourceLang;
-                    currentTargetLang = item.targetLang;
+                    currentSourceLang = findLang(item.sourceLang) ? findLang(item.sourceLang).code : 'auto';
+                    currentTargetLang = findLang(item.targetLang) ? findLang(item.targetLang).code : 'en';
+                    lastDetected = null;
+                    detectedLangTag.classList.add('hidden');
                     updateLangDisplayUI();
                     sourceText.value = itemInput;
-                    targetText.textContent = item.translatedText;
+                    renderOutput(item.translatedText, '', currentTargetLang);
                     updateCharCounter();
-                    currentTranslationResult = item;
-                    updateStarButtonState(item.isFavorite);
+                    currentTranslationResult = { ...item, inputText: itemInput };
+                    updateStarButtonState(!!item.isFavorite);
                     showToast("Loaded translation into workspace!", "info");
                 });
 
@@ -818,8 +1108,7 @@
 
                 card.querySelector('.star-btn').addEventListener('click', async (e) => {
                     e.stopPropagation();
-                    const newFav = !item.isFavorite;
-                    await toggleFavoriteStatus(item.id, newFav);
+                    await toggleFavoriteStatus(item.id, !item.isFavorite);
                 });
 
                 card.querySelector('.delete-btn').addEventListener('click', async (e) => {
@@ -831,321 +1120,442 @@
             });
         }
 
-        // Dual TTS Engine: Native Web Speech API with Fallback Google Audio Stream
-        let availableVoices = [];
+        // ------------------------------------------------------------------
+        // VOICE OUTPUT (text-to-speech)
+        //   1) Browser voices (chunked so long text doesn't stop halfway)
+        //   2) Google voice stream as a fallback for languages with no local voice
+        // ------------------------------------------------------------------
+        function normLang(l) { return (l || '').replace('_', '-').toLowerCase(); }
 
-        function loadSpeechVoices() {
-            if ('speechSynthesis' in window) {
-                availableVoices = window.speechSynthesis.getVoices();
-            }
+        function getVoicesReady() {
+            return new Promise(resolve => {
+                if (!('speechSynthesis' in window)) return resolve([]);
+                const now = window.speechSynthesis.getVoices();
+                if (now.length) { availableVoices = now; return resolve(now); }
+                const t = setTimeout(() => { availableVoices = window.speechSynthesis.getVoices(); resolve(availableVoices); }, 1200);
+                window.speechSynthesis.addEventListener('voiceschanged', () => {
+                    clearTimeout(t);
+                    availableVoices = window.speechSynthesis.getVoices();
+                    resolve(availableVoices);
+                }, { once: true });
+            });
         }
 
         if ('speechSynthesis' in window) {
-            loadSpeechVoices();
-            window.speechSynthesis.onvoiceschanged = loadSpeechVoices;
+            availableVoices = window.speechSynthesis.getVoices();
+            window.speechSynthesis.addEventListener('voiceschanged', () => {
+                availableVoices = window.speechSynthesis.getVoices();
+            });
+        }
+
+        function pickVoice(bcp47) {
+            const want = normLang(bcp47);
+            const base = want.split('-')[0];
+            return availableVoices.find(v => normLang(v.lang) === want)
+                || availableVoices.find(v => normLang(v.lang).split('-')[0] === base)
+                || null;
+        }
+
+        function setSpeakingButtonState(btn) {
+            btn.classList.add('text-indigo-600', 'animate-pulse');
+            const icon = btn.querySelector('i');
+            if (icon) { icon.classList.remove('fa-volume-high'); icon.classList.add('fa-stop'); }
+        }
+
+        function resetSpeakButton(btn) {
+            btn.classList.remove('text-indigo-600', 'animate-pulse');
+            const icon = btn.querySelector('i');
+            if (icon) { icon.classList.remove('fa-stop'); icon.classList.add('fa-volume-high'); }
         }
 
         function stopAllAudio() {
-            if (window.speechSynthesis) window.speechSynthesis.cancel();
+            speakToken++;
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
             if (fallbackAudioObj) {
+                fallbackAudioObj.onended = fallbackAudioObj.onerror = null;
                 fallbackAudioObj.pause();
                 fallbackAudioObj = null;
             }
+            currentUtterance = null;
             if (activeSpeakingBtn) {
                 resetSpeakButton(activeSpeakingBtn);
                 activeSpeakingBtn = null;
             }
         }
 
-        function speakText(text, langCode, buttonElem = null) {
-            if (!text || !text.trim() || text.includes("Translation will appear here...")) return;
+        function playViaGoogle(text, langCode, token) {
+            const lang = findLang(langCode);
+            const tl = lang ? lang.code : String(langCode).split('-')[0];
+            const chunks = splitText(text, 190).filter(c => c.trim());
+            let i = 0;
 
-            // Stop any playing speech
-            if (window.speechSynthesis.speaking || fallbackAudioObj) {
+            const fail = () => {
+                if (token !== speakToken) return;
+                showToast(`No voice found for ${lang ? lang.name : tl}. Install that language's voice in your device's speech settings, or try Chrome / Edge.`, 'warning', 5500);
                 stopAllAudio();
-                if (activeSpeakingBtn === buttonElem) return; // Toggle off
-            }
+            };
 
-            const langObj = LANGUAGES.find(l => l.code === langCode);
-            const bcp47 = langObj ? langObj.tts : 'en-US';
+            const next = () => {
+                if (token !== speakToken) return;
+                if (i >= chunks.length) { stopAllAudio(); return; }
+                const chunk = chunks[i].trim();
+                const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${encodeURIComponent(tl)}&q=${encodeURIComponent(chunk)}&total=${chunks.length}&idx=${i}&textlen=${chunk.length}`;
+                i++;
+                const audio = new Audio(url);
+                fallbackAudioObj = audio;
+                audio.onended = next;
+                audio.onerror = fail;
+                audio.play().catch(err => {
+                    console.warn('Audio playback failed:', err);
+                    fail();
+                });
+            };
+            next();
+        }
 
-            if (buttonElem) {
-                activeSpeakingBtn = buttonElem;
-                setSpeakingButtonState(buttonElem);
-            }
+        async function speakText(text, langCode, buttonElem = null) {
+            if (!text || !text.trim()) return;
 
-            // Check if Native Web Speech API has a voice for this BCP-47 tag
-            if (availableVoices.length === 0 && 'speechSynthesis' in window) {
-                availableVoices = window.speechSynthesis.getVoices();
-            }
+            // clicking the active button again = stop
+            if (buttonElem && activeSpeakingBtn === buttonElem) { stopAllAudio(); return; }
+            stopAllAudio();
+            if (isRecording && recognition) { try { recognition.abort(); } catch (e) { /* ignore */ } }
 
-            const hasNativeVoice = availableVoices.some(v => v.lang === bcp47 || v.lang.startsWith(bcp47.split('-')[0]));
+            const token = speakToken;
+            if (buttonElem) { activeSpeakingBtn = buttonElem; setSpeakingButtonState(buttonElem); }
 
-            if ('speechSynthesis' in window && hasNativeVoice) {
-                // Try Native Speech Synthesis
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = bcp47;
+            const lang = findLang(langCode);
+            const bcp47 = lang ? lang.tts : 'en-US';
 
-                const matchVoice = availableVoices.find(v => v.lang === bcp47) || 
-                                   availableVoices.find(v => v.lang.startsWith(bcp47.split('-')[0]));
-                if (matchVoice) utterance.voice = matchVoice;
+            await getVoicesReady();
+            if (token !== speakToken) return; // user stopped / started something else
 
-                utterance.onend = utterance.onerror = () => {
-                    if (buttonElem) resetSpeakButton(buttonElem);
-                    activeSpeakingBtn = null;
-                };
+            const voice = pickVoice(bcp47);
 
-                window.speechSynthesis.speak(utterance);
-            } else {
-                // Fail-safe Google Audio Stream fallback for 100% voice coverage (Tamil, Hindi, Telugu, etc.)
-                try {
-                    const cleanCode = langCode === 'zh-CN' ? 'zh-CN' : (langCode.split('-')[0]);
-                    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text.substring(0, 200))}&tl=${cleanCode}&client=tw-ob`;
-                    
-                    fallbackAudioObj = new Audio(audioUrl);
-                    fallbackAudioObj.onended = fallbackAudioObj.onerror = () => {
-                        if (buttonElem) resetSpeakButton(buttonElem);
-                        fallbackAudioObj = null;
-                        activeSpeakingBtn = null;
+            if ('speechSynthesis' in window && voice) {
+                const chunks = splitText(text, 180).filter(c => c.trim());
+                let i = 0;
+                const next = () => {
+                    if (token !== speakToken) return;
+                    if (i >= chunks.length) { stopAllAudio(); return; }
+                    const u = new SpeechSynthesisUtterance(chunks[i++]);
+                    u.voice = voice;
+                    u.lang = voice.lang;
+                    u.rate = 0.95;
+                    u.onend = next;
+                    u.onerror = (ev) => {
+                        if (ev.error === 'interrupted' || ev.error === 'canceled') return;
+                        console.warn('Native TTS error, switching to Google voice:', ev.error);
+                        if (token !== speakToken) return;
+                        window.speechSynthesis.cancel();
+                        playViaGoogle(text, langCode, token);
                     };
-                    fallbackAudioObj.play().catch(e => {
-                        console.warn("Audio playback failed:", e);
-                        showToast("Audio playback restricted by browser settings.", "warning");
-                        if (buttonElem) resetSpeakButton(buttonElem);
-                    });
-                } catch (e) {
-                    showToast("Speech synthesis not supported.", "error");
-                    if (buttonElem) resetSpeakButton(buttonElem);
-                }
+                    currentUtterance = u; // keep a reference (Chrome can garbage-collect it mid-speech)
+                    window.speechSynthesis.speak(u);
+                };
+                setTimeout(next, 60); // tiny delay after cancel() so Chrome doesn't drop the first utterance
+            } else {
+                playViaGoogle(text, langCode, token);
             }
         }
 
-        function setSpeakingButtonState(btn) {
-            btn.classList.add('text-indigo-600', 'animate-pulse');
-            const icon = btn.querySelector('i');
-            if (icon) icon.className = 'fa-solid fa-volume-wave-lines text-indigo-600';
+        // ------------------------------------------------------------------
+        // VOICE INPUT (speech-to-text)
+        // ------------------------------------------------------------------
+        function speechErrorMessage(code) {
+            switch (code) {
+                case 'not-allowed':
+                case 'service-not-allowed':
+                    return "Microphone blocked. Click the lock icon in the address bar, allow the microphone, then try again. (Voice input also needs https:// or localhost.)";
+                case 'no-speech':
+                    return "Didn't hear anything. Check your mic and try again.";
+                case 'audio-capture':
+                    return "No microphone found. Plug one in or check your system sound settings.";
+                case 'network':
+                    return "Voice input needs an internet connection (the browser sends audio to its speech service). Brave doesn't support it – use Chrome or Edge.";
+                case 'language-not-supported':
+                    return "This browser can't recognise speech in the selected source language.";
+                default:
+                    return "Voice input error: " + code;
+            }
         }
 
-        function resetSpeakButton(btn) {
-            btn.classList.remove('text-indigo-600', 'animate-pulse');
-            const icon = btn.querySelector('i');
-            if (icon) icon.className = 'fa-solid fa-volume-high';
+        function setRecordingUI(on) {
+            isRecording = on;
+            const icon = micBtn.querySelector('i');
+            micBtn.classList.toggle('text-red-500', on);
+            micBtn.classList.toggle('recording-pulse', on);
+            if (icon) icon.className = on ? 'fa-solid fa-stop' : 'fa-solid fa-microphone';
+            micBtn.title = on ? 'Stop listening' : 'Speak (voice input)';
         }
 
-        // Speech Recognition (Speech-to-Text) Dictation for ALL languages
-        function setupSpeechRecognition() {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) {
-                micBtn.title = "Speech recognition not supported in browser";
+        function startRecording() {
+            const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SR) {
+                showToast("Voice input isn't supported in this browser. Please use Chrome, Edge or Safari.", "warning", 5000);
                 return;
             }
 
-            speechRecognition = new SpeechRecognition();
-            speechRecognition.continuous = false;
-            speechRecognition.interimResults = true;
+            stopAllAudio(); // don't let the mic hear our own voice
 
-            speechRecognition.onstart = () => {
-                isRecording = true;
-                micBtn.classList.add('text-red-500', 'recording-pulse');
-                showToast("Listening... Speak now.", "info");
+            const srcLangObj = LANGUAGES.find(l => l.code === currentSourceLang);
+            const micLang = currentSourceLang === 'auto'
+                ? (navigator.language || 'en-US')
+                : (srcLangObj ? srcLangObj.tts : 'en-US');
+
+            const rec = new SR();
+            recognition = rec;
+            rec.lang = micLang;
+            rec.continuous = false;
+            rec.interimResults = true;
+            rec.maxAlternatives = 1;
+
+            const baseText = sourceText.value.trim() ? sourceText.value.trimEnd() + ' ' : '';
+            let finalTranscript = '';
+            let heardSomething = false;
+            let hadError = false;
+
+            rec.onstart = () => {
+                setRecordingUI(true);
+                if (currentSourceLang === 'auto') {
+                    showToast(`Listening in ${micLang}. Pick the language you speak as Source for best accuracy.`, "info", 4200);
+                } else {
+                    showToast(`Listening (${srcLangObj ? srcLangObj.name : micLang})... speak now.`, "info");
+                }
             };
 
-            speechRecognition.onresult = (event) => {
-                let transcript = Array.from(event.results)
-                    .map(result => result[0].transcript)
-                    .join('');
-                sourceText.value = transcript;
+            rec.onresult = (event) => {
+                let interim = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const res = event.results[i];
+                    if (res.isFinal) finalTranscript += res[0].transcript;
+                    else interim += res[0].transcript;
+                }
+                heardSomething = true;
+                sourceText.value = (baseText + finalTranscript + interim).slice(0, 5000);
                 updateCharCounter();
             };
 
-            speechRecognition.onerror = (event) => {
-                console.error("Speech recognition error:", event.error);
-                showToast("Voice input error: " + event.error, "error");
-                stopRecording();
+            rec.onerror = (event) => {
+                if (event.error === 'aborted') return;
+                hadError = true;
+                console.warn("Speech recognition error:", event.error);
+                showToast(speechErrorMessage(event.error), "error", 5500);
             };
 
-            speechRecognition.onend = () => {
-                stopRecording();
-                if (autoTranslateToggle.checked && sourceText.value.trim()) {
-                    handleTranslate();
+            rec.onend = () => {
+                setRecordingUI(false);
+                if (recognition === rec) recognition = null;
+                if (!hadError && heardSomething && sourceText.value.trim()) {
+                    handleTranslate({ save: true, speak: autoSpeakToggle.checked });
                 }
             };
-        }
 
-        function stopRecording() {
-            isRecording = false;
-            micBtn.classList.remove('text-red-500', 'recording-pulse');
+            try {
+                rec.start();
+            } catch (e) {
+                console.warn(e);
+                setRecordingUI(false);
+                showToast("Couldn't start the microphone. Please try again.", "error");
+            }
         }
 
         micBtn.addEventListener('click', () => {
-            if (!speechRecognition) {
-                showToast("Speech recognition not supported in browser.", "warning");
-                return;
-            }
-
-            if (isRecording) {
-                speechRecognition.stop();
+            if (isRecording && recognition) {
+                recognition.stop(); // finish and translate what was heard
             } else {
-                const langObj = LANGUAGES.find(l => l.code === currentSourceLang);
-                speechRecognition.lang = langObj && langObj.tts ? langObj.tts : 'en-US';
-                speechRecognition.start();
+                startRecording();
             }
         });
 
-        // Copy Utility
-        function copyToClipboard(text, message = "Copied to clipboard!") {
-            if (!text || text.includes("Translation will appear here...")) return;
-            
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            
+        // ------------------------------------------------------------------
+        // Copy, swap, favourites, delete, clear
+        // ------------------------------------------------------------------
+        async function copyToClipboard(text, message = "Copied to clipboard!") {
+            if (!text || !text.trim()) return;
             try {
-                document.execCommand('copy');
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    ta.style.position = 'fixed';
+                    ta.style.opacity = '0';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                }
                 showToast(message, "success");
             } catch (err) {
                 showToast("Failed to copy text.", "error");
-            } finally {
-                document.body.removeChild(textarea);
             }
         }
 
-        // Swap Languages
         swapLangBtn.addEventListener('click', () => {
-            if (currentSourceLang === 'auto') {
-                showToast("Select a specific source language to swap.", "info");
-                return;
+            let newTarget = currentSourceLang;
+            if (newTarget === 'auto') {
+                if (lastDetected && LANGUAGES.some(l => l.code === lastDetected)) {
+                    newTarget = lastDetected;
+                } else {
+                    showToast("Translate something first, or select a specific source language to swap.", "info");
+                    return;
+                }
             }
 
-            const temp = currentSourceLang;
+            const translatedNow = outputText;
             currentSourceLang = currentTargetLang;
-            currentTargetLang = temp;
-
+            currentTargetLang = newTarget;
+            lastDetected = null;
+            detectedLangTag.classList.add('hidden');
             updateLangDisplayUI();
 
-            const currentTargetTextVal = targetText.textContent;
-            if (currentTargetTextVal && !currentTargetTextVal.includes("Translation will appear here...")) {
-                sourceText.value = currentTargetTextVal;
+            if (translatedNow) {
+                sourceText.value = translatedNow;
                 updateCharCounter();
-                handleTranslate();
+                handleTranslate({ save: true });
             }
         });
 
-        // Toggle Favorite Status in Firestore
         async function toggleFavoriteStatus(id, newFavoriteStatus) {
-            if (isCloudAvailable && id && !id.startsWith('loc_')) {
+            if (isCloudAvailable && id && !String(id).startsWith('loc_')) {
                 try {
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'translations', id);
-                    await updateDoc(docRef, { isFavorite: newFavoriteStatus });
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'translations', id), { isFavorite: newFavoriteStatus });
+                    return;
                 } catch (e) {
                     console.warn("Firestore favorite update error:", e);
-                    updateLocalFavorite(id, newFavoriteStatus);
                 }
-            } else {
-                updateLocalFavorite(id, newFavoriteStatus);
             }
+            updateLocalFavorite(id, newFavoriteStatus);
         }
 
         function updateLocalFavorite(id, newFavoriteStatus) {
             const item = translationsHistory.find(i => i.id === id);
             if (item) {
                 item.isFavorite = newFavoriteStatus;
-                localStorage.setItem('lingo_local_history', JSON.stringify(translationsHistory));
+                persistLocal();
                 renderHistory();
             }
-        }
-
-        // Delete Single History Item
-        async function deleteHistoryItem(id) {
-            if (isCloudAvailable && id && !id.startsWith('loc_')) {
-                try {
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'translations', id);
-                    await deleteDoc(docRef);
-                    showToast("Translation deleted.", "info");
-                } catch (e) {
-                    console.warn("Firestore delete failed:", e);
-                    deleteLocalItem(id);
-                }
-            } else {
-                deleteLocalItem(id);
+            if (currentTranslationResult && currentTranslationResult.id === id) {
+                currentTranslationResult.isFavorite = newFavoriteStatus;
+                updateStarButtonState(newFavoriteStatus);
             }
         }
 
-        function deleteLocalItem(id) {
+        async function deleteHistoryItem(id) {
+            if (isCloudAvailable && id && !String(id).startsWith('loc_')) {
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'translations', id));
+                    showToast("Translation deleted.", "info");
+                    if (currentTranslationResult && currentTranslationResult.id === id) {
+                        currentTranslationResult.id = null; // can be saved again if the user re-translates
+                        updateStarButtonState(false);
+                    }
+                    return;
+                } catch (e) {
+                    console.warn("Firestore delete failed:", e);
+                }
+            }
             translationsHistory = translationsHistory.filter(i => i.id !== id);
-            localStorage.setItem('lingo_local_history', JSON.stringify(translationsHistory));
+            persistLocal();
             renderHistory();
             showToast("Translation deleted.", "info");
         }
 
-        // Clear All History Batch
-        confirmClearBtn.addEventListener('click', async () => {
+        function closeConfirmModal() {
             confirmModal.classList.add('hidden');
             confirmModal.classList.remove('flex');
+        }
+
+        clearAllHistoryBtn.addEventListener('click', () => {
+            confirmModal.classList.remove('hidden');
+            confirmModal.classList.add('flex');
+        });
+        cancelModalBtn.addEventListener('click', closeConfirmModal);
+
+        confirmClearBtn.addEventListener('click', async () => {
+            closeConfirmModal();
+            if (currentTranslationResult) { currentTranslationResult.id = null; updateStarButtonState(false); }
 
             if (isCloudAvailable) {
                 try {
-                    const batch = writeBatch(db);
-                    const snapshot = await getDocs(translationsColRef);
-                    snapshot.forEach(docSnap => {
-                        batch.delete(docSnap.ref);
-                    });
-                    await batch.commit();
-                    showToast("All history cleared from Firestore.", "success");
+                    const snapshot = await getDocs(historyQuery || translationsColRef);
+                    const docs = snapshot.docs;
+                    for (let i = 0; i < docs.length; i += 400) {
+                        const batch = writeBatch(db);
+                        docs.slice(i, i + 400).forEach(d => batch.delete(d.ref));
+                        await batch.commit();
+                    }
+                    showToast("History cleared.", "success");
+                    return;
                 } catch (e) {
                     console.warn("Batch clear failed:", e);
-                    translationsHistory = [];
-                    localStorage.removeItem('lingo_local_history');
-                    renderHistory();
+                    showToast("Couldn't clear cloud history. Cleared local copy only.", "warning");
                 }
-            } else {
-                translationsHistory = [];
-                localStorage.removeItem('lingo_local_history');
-                renderHistory();
-                showToast("Local history cleared.", "success");
             }
+            translationsHistory = [];
+            try { localStorage.removeItem('lingo_local_history'); } catch (e) { /* ignore */ }
+            renderHistory();
         });
 
-        // Typing Debounced Auto-Translate
-        sourceText.addEventListener('input', () => {
-            updateCharCounter();
-            if (autoTranslateToggle.checked) {
-                clearTimeout(autoTranslateTimeout);
-                autoTranslateTimeout = setTimeout(() => {
-                    handleTranslate();
-                }, 650);
-            }
-        });
-
+        // ------------------------------------------------------------------
+        // Inputs & buttons
+        // ------------------------------------------------------------------
         function updateCharCounter() {
-            const count = sourceText.value.length;
-            charCounter.textContent = `${count} / 5000`;
+            charCounter.textContent = `${sourceText.value.length} / 5000`;
         }
 
-        // Action Buttons
-        translateBtn.addEventListener('click', handleTranslate);
+        sourceText.addEventListener('input', () => {
+            updateCharCounter();
+            clearTimeout(autoSaveTimeout);
+            if (autoTranslateToggle.checked) {
+                clearTimeout(autoTranslateTimeout);
+                autoTranslateTimeout = setTimeout(() => handleTranslate({ save: false }), 600);
+            }
+        });
+
+        sourceText.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                handleTranslate({ save: true });
+            }
+        });
+
+        translateBtn.addEventListener('click', () => handleTranslate({ save: true }));
 
         clearSourceBtn.addEventListener('click', () => {
+            clearTimeout(autoTranslateTimeout);
+            clearTimeout(autoSaveTimeout);
+            translateSeq++;
+            if (translateController) translateController.abort();
+            loadingOverlay.classList.add('hidden');
             sourceText.value = '';
-            targetText.innerHTML = '<span class="text-slate-400 italic">Translation will appear here...</span>';
+            showPlaceholder();
             detectedLangTag.classList.add('hidden');
+            lastDetected = null;
             updateCharCounter();
             currentTranslationResult = null;
             updateStarButtonState(false);
+            sourceText.focus();
         });
 
-        speakSourceBtn.addEventListener('click', () => speakText(sourceText.value, currentSourceLang, speakSourceBtn));
-        speakTargetBtn.addEventListener('click', () => speakText(targetText.textContent, currentTargetLang, speakTargetBtn));
+        speakSourceBtn.addEventListener('click', () => {
+            const code = currentSourceLang === 'auto' ? (lastDetected || 'en') : currentSourceLang;
+            speakText(sourceText.value, code, speakSourceBtn);
+        });
+        speakTargetBtn.addEventListener('click', () => speakText(outputText, currentTargetLang, speakTargetBtn));
 
         copySourceBtn.addEventListener('click', () => copyToClipboard(sourceText.value, "Source text copied!"));
-        copyTargetBtn.addEventListener('click', () => copyToClipboard(targetText.textContent, "Translation copied!"));
+        copyTargetBtn.addEventListener('click', () => copyToClipboard(outputText, "Translation copied!"));
 
         favoriteCurrentBtn.addEventListener('click', async () => {
-            if (!currentTranslationResult || !currentTranslationResult.id) {
-                showToast("Translate text first to mark as favorite.", "info");
+            if (!currentTranslationResult) {
+                showToast("Translate some text first, then star it.", "info");
+                return;
+            }
+            await persistCurrent(); // make sure it is saved so it can be starred
+            if (!currentTranslationResult.id) {
+                showToast("Couldn't save this translation yet. Try again.", "warning");
                 return;
             }
             const newFav = !currentTranslationResult.isFavorite;
@@ -1155,103 +1565,40 @@
             showToast(newFav ? "Saved to Starred translations!" : "Removed from Starred.", "success");
         });
 
-        function updateStarButtonState(isFav) {
-            const starIcon = favoriteCurrentBtn.querySelector('i');
-            if (starIcon) {
-                starIcon.className = isFav ? "fa-solid fa-star text-amber-400 text-lg" : "fa-regular fa-star text-amber-400 text-lg";
-            }
+        // History tabs
+        function setActiveTab(tab) {
+            activeTab = tab;
+            const on = "flex-1 py-1 text-center rounded-md bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-indigo-300 font-medium transition-all";
+            const off = "flex-1 py-1 text-center rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-all";
+            tabAll.className = tab === 'all' ? on : off;
+            tabFavorites.className = tab === 'favorites' ? on : off;
+            renderHistory();
         }
-
-        // History Navigation Tabs
-        tabAll.addEventListener('click', () => {
-            activeTab = 'all';
-            tabAll.className = "flex-1 py-1 text-center rounded-md bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-indigo-300 font-medium transition-all";
-            tabFavorites.className = "flex-1 py-1 text-center rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-all";
-            renderHistory();
-        });
-
-        tabFavorites.addEventListener('click', () => {
-            activeTab = 'favorites';
-            tabFavorites.className = "flex-1 py-1 text-center rounded-md bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-indigo-300 font-medium transition-all";
-            tabAll.className = "flex-1 py-1 text-center rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-all";
-            renderHistory();
-        });
-
+        tabAll.addEventListener('click', () => setActiveTab('all'));
+        tabFavorites.addEventListener('click', () => setActiveTab('favorites'));
         historySearchInput.addEventListener('input', renderHistory);
 
-        clearAllHistoryBtn.addEventListener('click', () => {
-            confirmModal.classList.remove('hidden');
-            confirmModal.classList.add('flex');
-        });
-
-        cancelModalBtn.addEventListener('click', () => {
-            confirmModal.classList.add('hidden');
-            confirmModal.classList.remove('flex');
-        });
-
-        // Toast Notification System
-        function showToast(message, type = 'info') {
-            const toastContainer = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-
-            let bgClass = "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900";
-            let iconClass = "fa-circle-info text-indigo-400";
-
-            if (type === 'success') {
-                iconClass = "fa-circle-check text-emerald-400";
-            } else if (type === 'error') {
-                iconClass = "fa-circle-exclamation text-red-400";
-            } else if (type === 'warning') {
-                iconClass = "fa-triangle-exclamation text-amber-400";
+        // Keyboard + connectivity
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLanguagePicker();
+                closeConfirmModal();
             }
-
-            toast.className = `pointer-events-auto flex items-center space-x-2.5 px-4 py-2.5 rounded-xl shadow-xl text-xs font-medium transform transition-all duration-300 opacity-0 translate-y-2 ${bgClass}`;
-            toast.innerHTML = `
-                <i class="fa-solid ${iconClass} text-sm"></i>
-                <span>${escapeHtml(message)}</span>
-            `;
-
-            toastContainer.appendChild(toast);
-
-            requestAnimationFrame(() => {
-                toast.classList.remove('opacity-0', 'translate-y-2');
-            });
-
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-2');
-                setTimeout(() => {
-                    if (toast.parentNode) toast.parentNode.removeChild(toast);
-                }, 300);
-            }, 3000);
-        }
-
-        // Helper Functions
-        function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
-
-        function timeAgo(date) {
-            if (!date) return 'Just now';
-            const now = new Date();
-            const seconds = Math.floor((now - date) / 1000);
-            if (seconds < 30) return 'Just now';
-            if (seconds < 60) return `${seconds}s ago`;
-            const minutes = Math.floor(seconds / 60);
-            if (minutes < 60) return `${minutes}m ago`;
-            const hours = Math.floor(minutes / 60);
-            if (hours < 24) return `${hours}h ago`;
-            const days = Math.floor(hours / 24);
-            if (days < 7) return `${days}d ago`;
-            return date.toLocaleDateString();
-        }
-
-        // Initialize Application on Page Load
-        window.addEventListener('DOMContentLoaded', async () => {
-            initTheme();
-            updateLangDisplayUI();
-            setupSpeechRecognition();
-            await initFirebaseAndSync();
         });
+        window.addEventListener('offline', () => showToast("You're offline. Translation needs internet.", "warning"));
+        window.addEventListener('online', () => showToast("Back online.", "success", 1800));
+
+        // ------------------------------------------------------------------
+        // Init
+        // ------------------------------------------------------------------
+        initTheme();
+        updateLangDisplayUI();
+        updateCharCounter();
+        if (!(window.SpeechRecognition || window.webkitSpeechRecognition)) {
+            micBtn.title = "Voice input isn't supported in this browser (use Chrome, Edge or Safari)";
+            micBtn.classList.add('opacity-50');
+        }
+        initFirebaseAndSync();
     </script>
 </body>
 </html>
