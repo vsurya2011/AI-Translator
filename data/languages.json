@@ -1,0 +1,324 @@
+[
+ {
+  "code": "auto",
+  "name": "Auto Detect",
+  "native": "✨ Automatic",
+  "flag": "✨",
+  "tts": "en-US"
+ },
+ {
+  "code": "en",
+  "name": "English",
+  "native": "English",
+  "flag": "🇺🇸",
+  "tts": "en-US"
+ },
+ {
+  "code": "ta",
+  "name": "Tamil",
+  "native": "தமிழ்",
+  "flag": "🇮🇳",
+  "tts": "ta-IN"
+ },
+ {
+  "code": "hi",
+  "name": "Hindi",
+  "native": "हिन्दी",
+  "flag": "🇮🇳",
+  "tts": "hi-IN"
+ },
+ {
+  "code": "te",
+  "name": "Telugu",
+  "native": "తెలుగు",
+  "flag": "🇮🇳",
+  "tts": "te-IN"
+ },
+ {
+  "code": "ml",
+  "name": "Malayalam",
+  "native": "മലയാളം",
+  "flag": "🇮🇳",
+  "tts": "ml-IN"
+ },
+ {
+  "code": "kn",
+  "name": "Kannada",
+  "native": "ಕನ್ನಡ",
+  "flag": "🇮🇳",
+  "tts": "kn-IN"
+ },
+ {
+  "code": "bn",
+  "name": "Bengali",
+  "native": "বাংলা",
+  "flag": "🇮🇳",
+  "tts": "bn-IN"
+ },
+ {
+  "code": "mr",
+  "name": "Marathi",
+  "native": "मराठी",
+  "flag": "🇮🇳",
+  "tts": "mr-IN"
+ },
+ {
+  "code": "gu",
+  "name": "Gujarati",
+  "native": "ગુજરાતી",
+  "flag": "🇮🇳",
+  "tts": "gu-IN"
+ },
+ {
+  "code": "pa",
+  "name": "Punjabi",
+  "native": "ਪੰਜਾਬੀ",
+  "flag": "🇮🇳",
+  "tts": "pa-IN"
+ },
+ {
+  "code": "or",
+  "name": "Odia",
+  "native": "ଓଡ଼ିଆ",
+  "flag": "🇮🇳",
+  "tts": "or-IN"
+ },
+ {
+  "code": "ur",
+  "name": "Urdu",
+  "native": "اردو",
+  "flag": "🇵🇰",
+  "tts": "ur-PK"
+ },
+ {
+  "code": "ne",
+  "name": "Nepali",
+  "native": "नेपाली",
+  "flag": "🇳🇵",
+  "tts": "ne-NP"
+ },
+ {
+  "code": "si",
+  "name": "Sinhala",
+  "native": "සිංහල",
+  "flag": "🇱🇰",
+  "tts": "si-LK"
+ },
+ {
+  "code": "es",
+  "name": "Spanish",
+  "native": "Español",
+  "flag": "🇪🇸",
+  "tts": "es-ES"
+ },
+ {
+  "code": "fr",
+  "name": "French",
+  "native": "Français",
+  "flag": "🇫🇷",
+  "tts": "fr-FR"
+ },
+ {
+  "code": "de",
+  "name": "German",
+  "native": "Deutsch",
+  "flag": "🇩🇪",
+  "tts": "de-DE"
+ },
+ {
+  "code": "it",
+  "name": "Italian",
+  "native": "Italiano",
+  "flag": "🇮🇹",
+  "tts": "it-IT"
+ },
+ {
+  "code": "pt",
+  "name": "Portuguese",
+  "native": "Português",
+  "flag": "🇵🇹",
+  "tts": "pt-PT"
+ },
+ {
+  "code": "ru",
+  "name": "Russian",
+  "native": "Русский",
+  "flag": "🇷🇺",
+  "tts": "ru-RU"
+ },
+ {
+  "code": "zh-CN",
+  "name": "Chinese (Simplified)",
+  "native": "中文 (简体)",
+  "flag": "🇨🇳",
+  "tts": "zh-CN"
+ },
+ {
+  "code": "ja",
+  "name": "Japanese",
+  "native": "日本語",
+  "flag": "🇯🇵",
+  "tts": "ja-JP"
+ },
+ {
+  "code": "ko",
+  "name": "Korean",
+  "native": "한국어",
+  "flag": "🇰🇷",
+  "tts": "ko-KR"
+ },
+ {
+  "code": "ar",
+  "name": "Arabic",
+  "native": "العربية",
+  "flag": "🇸🇦",
+  "tts": "ar-SA"
+ },
+ {
+  "code": "fa",
+  "name": "Persian",
+  "native": "فارسی",
+  "flag": "🇮🇷",
+  "tts": "fa-IR"
+ },
+ {
+  "code": "he",
+  "name": "Hebrew",
+  "native": "עברית",
+  "flag": "🇮🇱",
+  "tts": "he-IL"
+ },
+ {
+  "code": "tr",
+  "name": "Turkish",
+  "native": "Türkçe",
+  "flag": "🇹🇷",
+  "tts": "tr-TR"
+ },
+ {
+  "code": "nl",
+  "name": "Dutch",
+  "native": "Nederlands",
+  "flag": "🇳🇱",
+  "tts": "nl-NL"
+ },
+ {
+  "code": "pl",
+  "name": "Polish",
+  "native": "Polski",
+  "flag": "🇵🇱",
+  "tts": "pl-PL"
+ },
+ {
+  "code": "uk",
+  "name": "Ukrainian",
+  "native": "Українська",
+  "flag": "🇺🇦",
+  "tts": "uk-UA"
+ },
+ {
+  "code": "vi",
+  "name": "Vietnamese",
+  "native": "Tiếng Việt",
+  "flag": "🇻🇳",
+  "tts": "vi-VN"
+ },
+ {
+  "code": "th",
+  "name": "Thai",
+  "native": "ไทย",
+  "flag": "🇹🇭",
+  "tts": "th-TH"
+ },
+ {
+  "code": "id",
+  "name": "Indonesian",
+  "native": "Bahasa Indonesia",
+  "flag": "🇮🇩",
+  "tts": "id-ID"
+ },
+ {
+  "code": "ms",
+  "name": "Malay",
+  "native": "Bahasa Melayu",
+  "flag": "🇲🇾",
+  "tts": "ms-MY"
+ },
+ {
+  "code": "sv",
+  "name": "Swedish",
+  "native": "Svenska",
+  "flag": "🇸🇪",
+  "tts": "sv-SE"
+ },
+ {
+  "code": "da",
+  "name": "Danish",
+  "native": "Dansk",
+  "flag": "🇩🇰",
+  "tts": "da-DK"
+ },
+ {
+  "code": "fi",
+  "name": "Finnish",
+  "native": "Suomi",
+  "flag": "🇫🇮",
+  "tts": "fi-FI"
+ },
+ {
+  "code": "no",
+  "name": "Norwegian",
+  "native": "Norsk",
+  "flag": "🇳🇴",
+  "tts": "nb-NO"
+ },
+ {
+  "code": "el",
+  "name": "Greek",
+  "native": "Ελληνικά",
+  "flag": "🇬🇷",
+  "tts": "el-GR"
+ },
+ {
+  "code": "cs",
+  "name": "Czech",
+  "native": "Čeština",
+  "flag": "🇨🇿",
+  "tts": "cs-CZ"
+ },
+ {
+  "code": "ro",
+  "name": "Romanian",
+  "native": "Română",
+  "flag": "🇷🇴",
+  "tts": "ro-RO"
+ },
+ {
+  "code": "hu",
+  "name": "Hungarian",
+  "native": "Magyar",
+  "flag": "🇭🇺",
+  "tts": "hu-HU"
+ },
+ {
+  "code": "bg",
+  "name": "Bulgarian",
+  "native": "Български",
+  "flag": "🇧🇬",
+  "tts": "bg-BG"
+ },
+ {
+  "code": "sw",
+  "name": "Swahili",
+  "native": "Kiswahili",
+  "flag": "🇰🇪",
+  "tts": "sw-KE"
+ },
+ {
+  "code": "tl",
+  "name": "Filipino",
+  "native": "Tagalog",
+  "flag": "🇵🇭",
+  "tts": "fil-PH"
+ }
+]
